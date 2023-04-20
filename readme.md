@@ -23,3 +23,40 @@ Open the page and search for a city. If the city is found and the weather is sho
 5. Add the possibility to save locations to a list.
 6. Allow to select a location from the list and show the weather there.
 7. Allow to delete a location from the list.
+8. Add links to appropriate clothing offers based on the found weather condition. (Similar as an advertisement would do it).
+
+### Hints for Task #8 (generated with ChatGPT)
+
+To fetch products (image, URL, price) from a clothing store that match a given search query using JavaScript, you can use web scraping techniques along with the appropriate APIs (if available). Here is a sample code that can fetch the products from a store called "clothingstore.com":
+
+```javascript
+const request = require('request');
+const cheerio = require('cheerio');
+
+const searchQuery = 'red dress'; // Set the search query here
+const url = `https://www.clothingstore.com/search?q=${searchQuery}`;
+
+request(url, (error, response, body) => {
+  if (!error && response.statusCode === 200) {
+    const $ = cheerio.load(body);
+
+    const products = [];
+    $('.product-item').each((i, el) => {
+      const product = {};
+      product.image = $(el).find('.product-image img').attr('src');
+      product.url = $(el).find('.product-title a').attr('href');
+      product.price = $(el).find('.product-price').text().trim();
+      products.push(product);
+    });
+
+    console.log(products);
+  } else {
+    console.log(error);
+  }
+});
+```
+
+In this code, we first set the search query and generate the URL based on it. We then use the `request` library to fetch the HTML of the search results page. Next, we use the `cheerio` library to parse the HTML and extract the relevant information for each product. Finally, we store the products in an array and log it to the console.
+
+Note that this code is just an example, and you will need to customize it based on the specific structure and APIs of the clothing store you are targeting. Also, please make sure to respect the store's terms of service and robots.txt file when scraping their website.
+
